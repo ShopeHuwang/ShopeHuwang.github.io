@@ -1,0 +1,394 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <meta name="theme-color" content="#34495e">
+  <title>Shope</title>
+  <link rel="alternate" href="path/of/rss" type="application/atom+xml">
+  <link rel="shortcut icon" type="image/ico" href="/favicon.ico">
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+
+  
+
+  
+
+  
+
+<meta name="generator" content="Hexo 5.4.0"></head>
+
+<body>
+  <div class="mobile-header">
+    <span><i class="iconfont icon-turnon" id="mobile-nav-toggle"></i></span>
+    <div class="mobile-logo">
+      <a href="/.">Shope Huwang</a>
+    </div>
+  </div>
+  <div class="page" id="mobile-nav-panel">
+    <div class="container">
+      <header class="site-nav">
+      <div class="nav-content">
+        <div class="logo">
+          <a href="/">Shope Huwang</a>
+        </div>
+        <nav class="navbar">
+          <ul>
+            
+              <li class="menu-item">
+                <a href="/" class="menu-item-link"><i class="iconfont icon-home"></i>首页</a>
+              </li>
+            
+              <li class="menu-item">
+                <a href="/archives" class="menu-item-link"><i class="iconfont icon-archive"></i>归档</a>
+              </li>
+            
+              <li class="menu-item">
+                <a href="/about" class="menu-item-link"><i class="iconfont icon-about"></i>关于</a>
+              </li>
+            
+          </ul>
+        </nav>
+      </div>
+</header>
+
+      <div class="banner">
+  <div class="show">
+    <!-- <img src="/" alt="banner"> -->
+    <div class="banner-title">
+      
+        <div class="intro">
+          You&#39;ll shine like a diamond
+        </div>
+      
+    </div>
+  </div>
+</div>
+
+      <main class="main"id="main">
+          <section class="posts">
+  
+    <article class="post" id="post-excerpt">
+      <header>
+        <div class="post-title">
+          <h1><a class="post-title-link" href="/2020/11/26/2020-11-26-MySQL/">MySQL</a></h1>
+        </div>
+        <div class="post-meta">
+          <span class="post-time"><i class="iconfont icon-calendar"></i>2020-11-26</span>
+          
+              
+                <i class="iconfont icon-divide"></i>
+                <i class="iconfont icon-folder" style="color: #8a8a8a;"></i>
+                <a class="post-category" href="/categories/MySQL/">MySQL</a>
+              
+          
+          <!---------------------------------------->
+            
+        <!----------------------------------------->
+        </div>
+      </header>
+      <div class="post-content">
+        <!-------------->
+        
+          <blockquote>
+<p>索引：是为了实现快速查找的一种排好序的数据结构。</p>
+</blockquote>
+<p>在MySQL中页默认为大小为16KB</p>
+<h3 id="MySQL索引存储结构"><a href="#MySQL索引存储结构" class="headerlink" title="MySQL索引存储结构"></a>MySQL索引存储结构</h3><h4 id="B-树（多路平衡树）"><a href="#B-树（多路平衡树）" class="headerlink" title="B+树（多路平衡树）"></a>B+树（多路平衡树）</h4><ul>
+<li>叶子节点才有Data，叶子节点有左右指针<strong>非叶子节点</strong>只存储Index(索引)。</li>
+<li>叶子节点包含所有索引字段。</li>
+<li>叶子节点用指针连接，提高区间访问的性能。</li>
+</ul>
+<img src="https://i.loli.net/2020/11/26/swLuToUBxD2CMXJ.png" style="zoom:80%;" />
+
+<p>**特点:**所有索引元素从左往右依次递增，所以MySQL建议使用int（整型）作为自增主键，便于维护B+树。如果不是用自增的int，则在添加的时候会导致数据库在维护表时会消耗大量的资源。如果主键是字符，会使用字符的ASCII码进行比较。使用B+树，使用自增主键，方便维护B+树，防止分类，增加维护成本。</p>
+<h4 id="B树"><a href="#B树" class="headerlink" title="B树"></a>B树</h4><ul>
+<li><p>所有节点都有Data。</p>
+<p><img src="https://i.loli.net/2020/11/26/6HWhFAeZPwkU7TI.png"></p>
+</li>
+</ul>
+<h4 id="Hash结构"><a href="#Hash结构" class="headerlink" title="Hash结构"></a>Hash结构</h4><ul>
+<li>仅能满足 “=”、“IN”查找，不支持范围查找。</li>
+<li>MySQL一般不使用该结构。</li>
+</ul>
+<p>Hash冲突：使用拉链法解决Hash冲突问题。</p>
+<h3 id="MySQL存储引擎"><a href="#MySQL存储引擎" class="headerlink" title="MySQL存储引擎"></a>MySQL存储引擎</h3><h4 id="InnoDB"><a href="#InnoDB" class="headerlink" title="InnoDB"></a>InnoDB</h4><p>​    1、支持事务。</p>
+<p>​    2、支持行锁。</p>
+<p>​    <strong>存储引擎实现：</strong></p>
+<p>​    <strong>主键索引：</strong>使用聚集(聚簇)索引，索引的Data为数据库表中一行数据。</p>
+<p>​    <strong>一般索引：</strong>使用非聚集索引，索引的Data为主键(Primary Key)列。</p>
+<p>​    使用一般索引在查找到数据后，会再使用主键到主键索引中查找，此时会再做一次I/O，性能对于使用主键索引查找来说较低。</p>
+<p><strong>注意：</strong>如果建立的表没有<strong>主键（Primary Key）</strong>，会自动找出表中具有<strong>唯一性的列</strong>作为B+树的聚簇索引列，如果没有唯一性的列，则会自动添加隐藏列作为B+树的聚簇索引列。</p>
+<h5 id="MVCC"><a href="#MVCC" class="headerlink" title="MVCC"></a>MVCC</h5><p>Multi Version Concurrency Control 多版本并发控制，<strong>目的在于提高数据库高并发场景下的吞吐性能</strong>。</p>
+<p>MySQL在 <strong>可重复读（REPEATABLE READ）</strong>与<strong>读已提交（READ COMMITED）</strong>隔离级别下使用MVCC保证事务的隔离性。对同一行数据的读写两个操作默认是不通过加锁来保证事务隔离性，避免了频繁加锁互斥。</p>
+<p>在 <strong>串行化（SERIALIZABLE）</strong>隔离级别下，为保证隔离性使用锁来实现。</p>
+<p><strong>undo日志版本链与read view机制详解</strong></p>
+<p>​    <strong>undo日志</strong>版本链是指：一行数据被多个事务依次修改过后，在每个事务修改完成后，MySQL会保存修改前的数据，并使用两个隐藏字段 <strong>trx_id（事务Id）</strong> 和 <strong>roll_pointer（回滚指针）</strong> 把undo日志串联成一个历史的<strong>记录版本链</strong>。</p>
+<p><img src="https://i.loli.net/2020/11/26/49FLvUMGXsASPWK.png" alt="MVCC_undo日志.png"></p>
+<p>​    在 <strong>可重复读隔离级</strong> 别，当事务开启，执行任何查询语句时才会生成当前事务的<strong>一致性视图</strong>read-view（<font color="red">并非在事务开启时就产生</font>），该视图在事务结束前不会变化（<strong>如果是<font color="red">读已提交隔离级别</font>，在每次执行查询SQL时都会生成新的read-view</strong>），read-view视图由执行时查询时所有活跃的事务ID构成事务ID数组（事务 <code>ID</code> 是事务开启时 <code>InnoDB</code> 分配的，其大小决定了事务开启的先后顺序），</p>
+<p><strong>版本链对比规则：</strong></p>
+<p>注：被访问版本的事务ID为：trx_id</p>
+<p>1、如果（trx_id &lt; min_trx_id），表示该视图生成前，版本由已经提交的事务生成，该条数据可见。</p>
+<p>2、如果（trx_id &gt; max_trx_id），表示该视图生成前，事务还没开启，数据不可见。</p>
+<p>3、如果（min_trx_id&lt;= trx_id &lt;= max_trx_id），再分为两种情况：</p>
+<p>​    1&gt; 如果 trx_id 在视图数组中，表示该视图生成前，版本由未提交事务生成，数据不可见；如果 trx_id 为当前事务的ID，数据可见。</p>
+<p>​    2&gt;如果 trx_id 不在视图数组中，表示该视图生成前，版本由已经提交的事务生成，数据可见。</p>
+<p>例如：在可重复度读级别下：</p>
+<p>注：时间顺序自顶向下</p>
+<table>
+<thead>
+<tr>
+<th>&lt;60&gt;</th>
+<th>&lt;100&gt;</th>
+<th>&lt;200&gt;</th>
+<th>&lt;300&gt;</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>START TRANSACTION;</td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td></td>
+<td>START TRANSACTION;</td>
+<td>START TRANSACTION;</td>
+<td></td>
+</tr>
+<tr>
+<td></td>
+<td>update (1,’lilei100’)</td>
+<td>Select id = 1; result=(1,’lilei’)</td>
+<td>START TRANSACTION;</td>
+</tr>
+<tr>
+<td>Select id = 1; result=(1,’lilei’)</td>
+<td></td>
+<td></td>
+<td>update (1,’lilei300’)</td>
+</tr>
+<tr>
+<td></td>
+<td>Select id = 1; result=(1,’lilei100’)</td>
+<td>update (1,’lilei2’)</td>
+<td></td>
+</tr>
+<tr>
+<td></td>
+<td></td>
+<td>Select id = 1; result=(1,’lilei2’)</td>
+<td></td>
+</tr>
+<tr>
+<td>Select id = 1; result=(1,’lilei’)</td>
+<td></td>
+<td>update (1,’lilei4’)</td>
+<td>COMMIT;</td>
+</tr>
+<tr>
+<td>COMMIT;</td>
+<td>COMMIT;</td>
+<td>Select id = 1; result=(1,’lilei4’)</td>
+<td></td>
+</tr>
+<tr>
+<td></td>
+<td></td>
+<td>COMMIT;</td>
+<td></td>
+</tr>
+</tbody></table>
+<h4 id="MyISAM"><a href="#MyISAM" class="headerlink" title="MyISAM"></a>MyISAM</h4><p>缺点：不支持事务和行锁，崩溃后无法自动恢复。</p>
+<p><strong>存储引擎实现</strong></p>
+<p>主键索引：使用B+树存储每条记录的磁盘物理地址</p>
+<ul>
+<li><p>锁表机制</p>
+<p>对整张表加锁，不针对行加锁，读数据加共享锁，写数据加排他锁。</p>
+</li>
+<li><p>全文索引</p>
+<p>支持全文索引，一种基于分词创建的索引，可以支持复杂的检索查询。</p>
+</li>
+</ul>
+<h4 id="联合索引"><a href="#联合索引" class="headerlink" title="联合索引"></a>联合索引</h4><p>索引的排列顺序根据自然排序（最左子前缀原则）。</p>
+<figure class="highlight markdown"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="section"># Eg: Index<span class="emphasis">_1(name,age,dept)</span></span></span><br><span class="line"><span class="section"><span class="emphasis">(&quot;Bill&quot;,20,dev),(&quot;Bill&quot;,30,test)</span></span></span><br><span class="line"><span class="section"><span class="emphasis"># 会先比较 name, 如果 name 相同，比较age</span></span></span><br><span class="line"><span class="section"><span class="emphasis"></span></span></span><br><span class="line"><span class="section"><span class="emphasis"># 这条查询语句会经过索引去查找，遵循&quot;最左子前缀原则&quot;</span></span></span><br><span class="line"><span class="section"><span class="emphasis">SELECT * FROM table_</span>name WHERE name = &quot;Bill&quot; AND age =20; </span></span><br><span class="line"><span class="section"># 这条不会经过索引去查找</span></span><br><span class="line">SELECT <span class="emphasis">* FROM table_name WHERE age =20; </span></span><br></pre></td></tr></table></figure>
+
+<h3 id="Buffer-Pool"><a href="#Buffer-Pool" class="headerlink" title="Buffer Pool"></a>Buffer Pool</h3><p>BufferPool支持InnoDB引擎。</p>
+<p>BufferPool从磁盘中读取数据每次读取并不是数据库表中的一行数据，而是以页（默认大小为16K）为单位将数据读取。</p>
+<p><strong>我们在对数据库中的表进行修改的时候，执行SQL后会经历下面几个过程：</strong></p>
+<p>​    <strong>1.<strong>从磁盘中查找将要修改的数据所在的页，将一整页数据读取到</strong>BufferPool</strong>中。</p>
+<p>​    <strong>2.<strong>将</strong>旧的数据</strong>（修改前的数据）写入到<strong>undo日志</strong>。写入undo日志：1.支持不同的隔离级别去读取数据；2.如果需要事务回滚，通过undo日志将数据恢复。</p>
+<p>​    **3.**将修改的数据更新到BufferPool中。</p>
+<p>​    <strong>4.<strong>将修改的内容写入到</strong>Redo Log Buffer</strong>。</p>
+<p>​    <strong>5.<strong>事务提交（commit）后，将Redo Log Buffer中的</strong>redo日志</strong>，写入到redo日志文件中。redo日志的作用是：防止将BufferPool中的数据随机写入到磁盘时，出现宕机情况，导致数据没有写入到磁盘中。redo日志用于恢复BufferPool的数据。</p>
+<p>​    <strong>6.<strong>将修改的数据写入到</strong>binlog日志</strong>（使用顺序IO）。binlog属于MySQL。什么意思呢？就是其他数据引擎也有写binlog日志的功能，例如：MyISAM也可以写binlog日志。</p>
+<p>​    **7.**写入commit标记到redo日志文件中。以确保redo日志和binlog日志一致。</p>
+<p>​    **8.**将BufferPool中的数据以页为单位，随机写入到磁盘中（使用随机IO）。（具体什么时候写入磁盘这个是用户无法知晓的）</p>
+<p><strong>InnoDB的机制好处：</strong></p>
+<p>​    1.提升性能。在缓存中读取速度远远快于在磁盘中读取。</p>
+<p>​    2.提升安全性。防止数据保存失败。</p>
+<p>在我们执行SELECT语句时，是会在BufferPool中查询，即使我们磁盘中的数据还是修改前的数据。</p>
+<p><img src="https://i.loli.net/2020/11/26/sXDRzg8H51cu3xn.png" alt="BufferPoo-缓存机制.PNG"></p>
+<h3 id="事务-amp-锁"><a href="#事务-amp-锁" class="headerlink" title="事务&amp;锁"></a>事务&amp;锁</h3><h4 id="并发带来的问题"><a href="#并发带来的问题" class="headerlink" title="并发带来的问题"></a>并发带来的问题</h4><p><strong>更新丢失：</strong>最后一个事务覆盖掉前面事务的更新。</p>
+<p><strong>脏读：</strong>事务A读取到事务B已修改但是未提交的数据。</p>
+<p><strong>不可重复读：</strong>一个事务在读取某些数据后的某个时间，再次读取以前读过的数据，却发现其读出的数据已经发生了<strong>改变</strong>或<strong>删除</strong>某些记录！这种现象就叫做“不可重复读”。</p>
+<p>​    <strong>在事务A内部做查询时不同时刻读到的结果不一致。</strong></p>
+<p><strong>幻读：</strong>一个事务按相同的查询条件重新读取以前检索过的数据，却发现其他事务<strong>插入</strong>了满足其查询条件的新数 据，这种现象就称为“幻读”。 </p>
+<p>​    <strong>事务A读取到了事务B提交的新增数据，不符合隔离性</strong></p>
+<h4 id="锁"><a href="#锁" class="headerlink" title="锁"></a>锁</h4><ul>
+<li><p>从性能上分为乐观锁(用版本对比来实现)和悲观锁</p>
+</li>
+<li><p>从对数据库操作的类型分，分为<strong>读锁</strong>和<strong>写锁</strong>(都属于悲观锁) </p>
+<p>读锁（共享锁，S锁(Shared)）：针对同一份数据，多个读操作可以同时进行而不会互相影响 </p>
+<p>写锁（排它锁，X锁(eXclusive)）：当前写操作没有完成前，它会阻断其他写锁和读锁 </p>
+</li>
+<li><p>从对数据操作的粒度分，分为<strong>表锁</strong>和<strong>行锁</strong></p>
+<p><strong>读锁会阻塞写，不会阻塞读</strong></p>
+<p><strong>写锁会阻塞读写</strong></p>
+<p>InnoDB：在执行INSERT、UPDATE、DELETE的时候会开启事务给<strong>修改行加锁</strong>。在SELECT时不会加锁，<strong>但事务被设定为SERIALIZABLE（串行化）隔离级时会加读锁</strong>。</p>
+<p>MyISAM：在SELECT前，给涉及的所有表加读锁，在执行INSERT、UPDATE、DELETE的时候会自动给涉及的表加写锁。</p>
+</li>
+</ul>
+<h1 id="Command-Line"><a href="#Command-Line" class="headerlink" title="Command Line"></a>Command Line</h1><p>查看表结构：</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">DESC</span>  table_name;</span><br></pre></td></tr></table></figure>
+
+<p>查看表DDL：</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">SHOW</span> <span class="keyword">CREATE</span> <span class="keyword">TABLE</span> table_name; </span><br></pre></td></tr></table></figure>
+
+<p>查看隔离级别：</p>
+<p>设置事务隔离级别：</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="operator">/</span><span class="operator">/</span>设置read uncommitted级别：</span><br><span class="line"><span class="keyword">SET</span> SESSION TRANSACTION ISOLATION LEVEL READ UNCOMMITTED;</span><br><span class="line"></span><br><span class="line"><span class="operator">/</span><span class="operator">/</span>设置read committed级别：</span><br><span class="line"><span class="keyword">SET</span> SESSION TRANSACTION ISOLATION LEVEL READ COMMITED;</span><br><span class="line"></span><br><span class="line"><span class="operator">/</span><span class="operator">/</span>设置repeatable read级别：</span><br><span class="line"><span class="keyword">SET</span> SESSION TRANSACTION ISOLATION LEVEL REPEATABLE READ;</span><br><span class="line"></span><br><span class="line"><span class="operator">/</span><span class="operator">/</span>设置serializable级别：</span><br><span class="line"><span class="keyword">SET</span> SESSION TRANSACTION ISOLATION LEVEL SERIALIZABLE;</span><br></pre></td></tr></table></figure>
+
+
+        
+        <!-------------->
+      </div>
+      <div class="post-tags">
+      
+        <a class="tag-none-link" href="/tags/InnoDB/" rel="tag">InnoDB</a> <a class="tag-none-link" href="/tags/MVCC/" rel="tag">MVCC</a> <a class="tag-none-link" href="/tags/MySQL/" rel="tag">MySQL</a>
+      
+    </div>
+    </article>
+  
+</section>
+
+          
+     <nav class="pagination">
+    
+      <a href="/page/4/">
+        <span class="prev"><i class="iconfont icon-back"></i>上一页</span>
+      </a>
+    
+    
+      <a href="/page/6/">
+        <span class="next">下一页<i class="iconfont icon-more"></i></span>
+      </a>
+    
+  </nav>
+
+
+          
+
+      </main>
+    </div>
+    <footer>
+      <div class="social-links">
+        
+          
+            <a target="_blank" rel="noopener" href="https://www.zhihu.com/"><i class="iconfont icon-zhihu"></i></a>
+          
+        
+          
+            <a target="_blank" rel="noopener" href="https://weibo.com"><i class="iconfont icon-weibo"></i></a>
+          
+        
+          
+            <a target="_blank" rel="noopener" href="https://github.com/"><i class="iconfont icon-github"></i></a>
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+      </div>
+      
+        <div class="quote">
+          <p>Love all, trust a few, do wrong to none.——William Shakespeare</p>
+        </div>
+      
+      <div class="copyright">
+        <p>
+          由 <a target="_blank" rel="noopener" href="https://hexo.io/">Hexo</a> 强力驱动
+          <span>|</span>
+          主题 - <a target="_blank" rel="noopener" href="https://github.com/wa-ri/hexo-theme-ztopic">ztopic</a
+        </p>
+        <p>
+          <span>
+          
+          &copy;
+          
+            2021
+          
+          </span>
+          <i class="iconfont icon-circle"></i>
+          <span>Shope Huwang</span>
+        </p>
+      </div>
+</footer>
+
+    <div class="back-to-top" id="back-to-top">
+      <i class="iconfont icon-up"></i>
+    </div>
+  </div>
+  <div id="mobile-nav">
+  <nav id="mobile-nav-menu">
+    
+      <a href="/" class="mobile-nav-link"><i class="iconfont icon-home"></i>首页</a>
+    
+      <a href="/archives" class="mobile-nav-link"><i class="iconfont icon-archive"></i>归档</a>
+    
+      <a href="/about" class="mobile-nav-link"><i class="iconfont icon-about"></i>关于</a>
+    
+    <div class="mobile-intro"><i class="iconfont icon-pen"></i>You&#39;ll shine like a diamond</div>
+  </nav>
+</div>
+
+
+  
+<script src="/libs/jQuery/jquery-3.2.1.min.js"></script>
+
+  
+<script src="/libs/slideout/slideout.min.js"></script>
+
+  
+    
+<link rel="stylesheet" href="/libs/fancybox/jquery.fancybox.css">
+
+    
+<script src="/libs/fancybox/jquery.fancybox.pack.js"></script>
+
+  
+  
+
+  
+<script src="/js/ztopic.js"></script>
+
+</body>
+</html>

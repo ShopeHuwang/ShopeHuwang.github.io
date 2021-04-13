@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <meta name="theme-color" content="#34495e">
+  <title>ZooKeeper | Shope</title>
+  <link rel="alternate" href="path/of/rss" type="application/atom+xml">
+  <link rel="shortcut icon" type="image/ico" href="/favicon.ico">
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+
+  
+
+  
+
+  
+
+<meta name="generator" content="Hexo 5.4.0"></head>
+
+<body>
+  <div class="mobile-header">
+    <span><i class="iconfont icon-turnon" id="mobile-nav-toggle"></i></span>
+    <div class="mobile-logo">
+      <a href="/.">Shope Huwang</a>
+    </div>
+  </div>
+  <div class="page" id="mobile-nav-panel">
+    <div class="container">
+      <header class="site-nav">
+      <div class="nav-content">
+        <div class="logo">
+          <a href="/">Shope Huwang</a>
+        </div>
+        <nav class="navbar">
+          <ul>
+            
+              <li class="menu-item">
+                <a href="/" class="menu-item-link"><i class="iconfont icon-home"></i>首页</a>
+              </li>
+            
+              <li class="menu-item">
+                <a href="/archives" class="menu-item-link"><i class="iconfont icon-archive"></i>归档</a>
+              </li>
+            
+              <li class="menu-item">
+                <a href="/about" class="menu-item-link"><i class="iconfont icon-about"></i>关于</a>
+              </li>
+            
+          </ul>
+        </nav>
+      </div>
+</header>
+
+      <div class="banner">
+  <div class="show">
+    <!-- <img src="/" alt="banner"> -->
+    <div class="banner-title">
+      
+        <div class="post-title">
+          ZooKeeper
+            <div class="post-tags">
+    		    
+              <a class="tag-none-link" href="/tags/ZooKeeper/" rel="tag">ZooKeeper</a>
+            
+    	      </div>
+        </div>
+      
+    </div>
+  </div>
+</div>
+
+      <main class="main"id="main">
+          <article class="post">
+  
+
+  <header>
+    <div class="post-title mobile-post-title">
+      <h1>ZooKeeper</h1>
+        <div class="post-tags">
+        
+          <a class="tag-none-link" href="/tags/ZooKeeper/" rel="tag">ZooKeeper</a>
+        
+        </div>
+    </div>
+    <div class="post-meta">
+      <span class="post-time"><i class="iconfont icon-calendar"></i>2020-09-08</span>
+      
+          
+            <i class="iconfont icon-divide"></i>
+            <i class="iconfont icon-folder" style="color: #8a8a8a;"></i>
+            <a class="post-category" href="/categories/ZooKeeper/">ZooKeeper</a>
+          
+      
+      <!----------------------------------->
+        
+      <!----------------------------------->
+    </div>
+  </header>
+  
+  <div class="post-toc" id="post-toc">
+    <h2 class="post-toc-title">目录</h2>
+    <div class="post-toc-content">
+      <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#1%E3%80%81ZooKeeper%E6%98%AF%E4%BB%80%E4%B9%88%EF%BC%9F"><span class="toc-text">1、ZooKeeper是什么？</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2%E3%80%81ZooKeeper%E6%96%87%E4%BB%B6%E7%B3%BB%E7%BB%9F%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84"><span class="toc-text">2、ZooKeeper文件系统数据结构</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Zookeeper-Atomic-Broadcast-ZAB"><span class="toc-text">Zookeeper Atomic Broadcast (ZAB)</span></a></li></ol>
+    </div>
+  </div>
+
+
+  <div class="post-content">
+    <h3 id="1、ZooKeeper是什么？"><a href="#1、ZooKeeper是什么？" class="headerlink" title="1、ZooKeeper是什么？"></a>1、ZooKeeper是什么？</h3><p>它是一个<strong>分布式协调框架</strong>，是Apache Hadoop 的一个子项 目，它主要是用来解决分布式应用中经常遇到的一些数据管理问题，如：统一命名服务、状态同 步服务、集群管理、分布式应用配置项的管理等。</p>
+<h3 id="2、ZooKeeper文件系统数据结构"><a href="#2、ZooKeeper文件系统数据结构" class="headerlink" title="2、ZooKeeper文件系统数据结构"></a>2、ZooKeeper文件系统数据结构</h3><p><strong>2.1、Zookeeper维护一个类似文件系统的数据结构：</strong></p>
+<p><img src="https://i.loli.net/2020/12/15/RWLyS2qiT9zZmxM.png" alt="ZooKeeper_Data_Struction.PNG"></p>
+<p>每个子目录项都被称作为 <strong>znode</strong>(目录节点)，和文件系统类似，我们能够自由的增加、删除 znode，在一个znode下增加、删除子znode。</p>
+<p><strong>2.2、节点类型：</strong></p>
+<ul>
+<li><p><strong>PERSISTENT­-持久化目录节点</strong>：客户端与zookeeper断开连接后，该节点依旧存在，只要不手动删除该节点，他将永远存在。</p>
+</li>
+<li><p><strong>PERSISTENT_SEQUENTIAL</strong>-持久化顺序编号目录节点：客户端与Zookeeper断开连接后，该节点依旧存在，只是Zookeeper给改节点名称进行顺序编号。</p>
+</li>
+<li><p><strong>EPHEMERAL-临时目录节点</strong>：客户端与Zookeeper断开连接后，改节点被删除。</p>
+</li>
+<li><p><strong>EPHEERAL_SEQUENTIAL</strong>-临时顺序编号目录节点：客户端与Zookeeper断开连接后，该节点被删除，只是Zookeeper给该节点名称进行顺序编号。</p>
+</li>
+<li><p><strong>Container-容器节点</strong>：如果Container节点下面没有znode（子节点），则Container节点在未来会被Zookeeper<strong>自动清除</strong>，定时任务默认60s检查一次。</p>
+</li>
+<li><p><strong>TTL节点</strong>：默认禁止，之恶能通过配置zookeeper.extendedTypeEnabled=true 开启，不稳定。</p>
+</li>
+</ul>
+<p><strong>2.3 、监听通知机制</strong></p>
+<ul>
+<li>如果注册的是对某个<strong>节点</strong>的监听，则当这个节点被删除，或者被修改时，对应的客户端将被通知</li>
+<li> 如果注册的是对某个<strong>目录</strong>的监听，则当这个目录有子节点被创建，或者有子节点被删除，对应的客户端将被通知</li>
+<li>如果注册的是对某个目录的递归子节点进行监听，则当这个目录下面的任意子节点有目录结构 的变化（有子节点被创建，或被删除）或者根节点有数据变化时，对应的客户端将被通知。</li>
+</ul>
+<p>需要注意的是通知是一次性的，只要触发过一次，第二次就不会再继续发通知，监听被移除了。递归监听，每个节点只会触发一次监听。</p>
+<p><strong>每个节点都有一个状态：</strong></p>
+<ul>
+<li><p><strong>Looking</strong>：此状态为集群中还未有Leader，所有的Follow都为Looking状态。</p>
+</li>
+<li><p><strong>Following</strong>：表明该节点是Follow节点，除了只能给客户端提供读取数据服务，还可以参与Leader选举。</p>
+</li>
+<li><p><strong>Leading</strong>：表示节点为Leader节点，提供读写数据的服务。</p>
+</li>
+<li><p><strong>Observing</strong>：表示为Observer节点，仅提供读请求，不可以参与Leader的选举和投票。</p>
+</li>
+</ul>
+<p><strong>ZooKeeper集群写数据机制：</strong>只有Leader节点才写数据，在Leader写入数据后，会让Follow节点去同步数据，Follow同步成功会响应给Leader，最后统计同步成功的Follow节点的数量，在集群中超过半数的Follow节点写入数据成功该条数据才算成功写入。<strong>Observer节点不计算为过半数量</strong>。</p>
+<p><strong>ZooKeeper选票逻辑：</strong></p>
+<p>在第X个周期（每个周期都只选出一个Leader）：</p>
+<p><strong>第一次投票</strong>：每个Follow都会选举自己，给自己投一票，发出投票信息，每个节点收到后会和自己的投票对比，然后选择<strong>zxid</strong>最大的为Leader(zxid最大表示机器的数据是最新的)，如果zxid一样大，则默认选择myid大的为Leader。每台Follow仅有一票，所以没有任何一台Follow所得票数过半，至此第一次投票失败。</p>
+<p><strong>第二次投票：</strong>在第一次投票后（经过选票PK）每台Follow都有了<strong>心目中的Leader</strong>，然后大家都会对自己心目中的Leader投票，所得票数过半的Follow会成为Leader。</p>
+<p><strong>选票的数据结构：</strong></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Vote</span> </span>&#123;</span><br><span class="line">    <span class="comment">// 这个暂时不知道</span></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">final</span> <span class="keyword">int</span> version;</span><br><span class="line">    <span class="comment">// 被选的Leader id</span></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">final</span> <span class="keyword">long</span> id;</span><br><span class="line">    <span class="comment">// 被选的Leaders 的事务ID</span></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">final</span> <span class="keyword">long</span> zxid;</span><br><span class="line">    <span class="comment">// 逻辑时钟 每进入新一轮的投票后都会 +1</span></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">final</span> <span class="keyword">long</span> electionEpoch;</span><br><span class="line">    <span class="comment">// 选举周期</span></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">final</span> <span class="keyword">long</span> peerEpoch;</span><br><span class="line">    <span class="comment">// 节点状态</span></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">final</span> ServerState state;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"> <span class="keyword">public</span> <span class="class"><span class="keyword">enum</span> <span class="title">ServerState</span> </span>&#123;</span><br><span class="line">    LOOKING,<span class="number">0</span></span><br><span class="line">    FOLLOWING,</span><br><span class="line">    LEADING,</span><br><span class="line">    OBSERVING</span><br><span class="line">   &#125;</span><br></pre></td></tr></table></figure>
+
+<p><strong>选票PK规则：</strong></p>
+<p><img src="https://i.loli.net/2020/12/15/R4BNFrujqh8cv2e.png" alt="Zookper-Election-Rule.PNG"></p>
+<p><a target="_blank" rel="noopener" href="https://www.processon.com/diagraming/5fbe79107d9c08478997a0e2"><strong>ZooKeeper源码学习思路图</strong></a></p>
+<h3 id="Zookeeper-Atomic-Broadcast-ZAB"><a href="#Zookeeper-Atomic-Broadcast-ZAB" class="headerlink" title="Zookeeper Atomic Broadcast (ZAB)"></a>Zookeeper Atomic Broadcast (ZAB)</h3>
+  </div>
+  <div class="post-footer">the end</div>
+</article>
+
+          
+  <nav class="pagination post-nav">
+    
+      <a href="/2020/10/05/2020-10-05-Redis/">
+        <span class="prev-post"><i class="iconfont icon-back"></i>Redis</span>
+      </a>
+    
+    
+      <a href="/2020/08/21/2020-08-21-IDEA/">
+        <span class="next-post">IDEA 工具使用<i class="iconfont icon-more"></i></span>
+      </a>
+    
+  </nav>
+
+
+          
+  
+
+
+      </main>
+    </div>
+    <footer>
+      <div class="social-links">
+        
+          
+            <a target="_blank" rel="noopener" href="https://www.zhihu.com/"><i class="iconfont icon-zhihu"></i></a>
+          
+        
+          
+            <a target="_blank" rel="noopener" href="https://weibo.com"><i class="iconfont icon-weibo"></i></a>
+          
+        
+          
+            <a target="_blank" rel="noopener" href="https://github.com/"><i class="iconfont icon-github"></i></a>
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+      </div>
+      
+        <div class="quote">
+          <p>Love all, trust a few, do wrong to none.——William Shakespeare</p>
+        </div>
+      
+      <div class="copyright">
+        <p>
+          由 <a target="_blank" rel="noopener" href="https://hexo.io/">Hexo</a> 强力驱动
+          <span>|</span>
+          主题 - <a target="_blank" rel="noopener" href="https://github.com/wa-ri/hexo-theme-ztopic">ztopic</a
+        </p>
+        <p>
+          <span>
+          
+          &copy;
+          
+            2021
+          
+          </span>
+          <i class="iconfont icon-circle"></i>
+          <span>Shope Huwang</span>
+        </p>
+      </div>
+</footer>
+
+    <div class="back-to-top" id="back-to-top">
+      <i class="iconfont icon-up"></i>
+    </div>
+  </div>
+  <div id="mobile-nav">
+  <nav id="mobile-nav-menu">
+    
+      <a href="/" class="mobile-nav-link"><i class="iconfont icon-home"></i>首页</a>
+    
+      <a href="/archives" class="mobile-nav-link"><i class="iconfont icon-archive"></i>归档</a>
+    
+      <a href="/about" class="mobile-nav-link"><i class="iconfont icon-about"></i>关于</a>
+    
+    <div class="mobile-intro"><i class="iconfont icon-pen"></i>You&#39;ll shine like a diamond</div>
+  </nav>
+</div>
+
+
+  
+<script src="/libs/jQuery/jquery-3.2.1.min.js"></script>
+
+  
+<script src="/libs/slideout/slideout.min.js"></script>
+
+  
+    
+<link rel="stylesheet" href="/libs/fancybox/jquery.fancybox.css">
+
+    
+<script src="/libs/fancybox/jquery.fancybox.pack.js"></script>
+
+  
+  
+
+  
+<script src="/js/ztopic.js"></script>
+
+</body>
+</html>

@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <meta name="theme-color" content="#34495e">
+  <title>Shope</title>
+  <link rel="alternate" href="path/of/rss" type="application/atom+xml">
+  <link rel="shortcut icon" type="image/ico" href="/favicon.ico">
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+
+  
+
+  
+
+  
+
+<meta name="generator" content="Hexo 5.4.0"></head>
+
+<body>
+  <div class="mobile-header">
+    <span><i class="iconfont icon-turnon" id="mobile-nav-toggle"></i></span>
+    <div class="mobile-logo">
+      <a href="/.">Shope Huwang</a>
+    </div>
+  </div>
+  <div class="page" id="mobile-nav-panel">
+    <div class="container">
+      <header class="site-nav">
+      <div class="nav-content">
+        <div class="logo">
+          <a href="/">Shope Huwang</a>
+        </div>
+        <nav class="navbar">
+          <ul>
+            
+              <li class="menu-item">
+                <a href="/" class="menu-item-link"><i class="iconfont icon-home"></i>首页</a>
+              </li>
+            
+              <li class="menu-item">
+                <a href="/archives" class="menu-item-link"><i class="iconfont icon-archive"></i>归档</a>
+              </li>
+            
+              <li class="menu-item">
+                <a href="/about" class="menu-item-link"><i class="iconfont icon-about"></i>关于</a>
+              </li>
+            
+          </ul>
+        </nav>
+      </div>
+</header>
+
+      <div class="banner">
+  <div class="show">
+    <!-- <img src="/" alt="banner"> -->
+    <div class="banner-title">
+      
+        <div class="intro">
+          You&#39;ll shine like a diamond
+        </div>
+      
+    </div>
+  </div>
+</div>
+
+      <main class="main"id="main">
+          <section class="posts">
+  
+    <article class="post" id="post-excerpt">
+      <header>
+        <div class="post-title">
+          <h1><a class="post-title-link" href="/2020/12/13/2020-12-13-RockerMQ/">RocketMQ</a></h1>
+        </div>
+        <div class="post-meta">
+          <span class="post-time"><i class="iconfont icon-calendar"></i>2020-12-13</span>
+          
+              
+                <i class="iconfont icon-divide"></i>
+                <i class="iconfont icon-folder" style="color: #8a8a8a;"></i>
+                <a class="post-category" href="/categories/Spring/">Spring</a>
+              
+          
+          <!---------------------------------------->
+            
+        <!----------------------------------------->
+        </div>
+      </header>
+      <div class="post-content">
+        <!-------------->
+        
+          <p><strong>MQ的作用：</strong></p>
+<ul>
+<li>异步：将消息发布到MQ中后就可以去完成其他的。</li>
+<li>解耦：服务之间解耦，减少服务之间的影响，提高系统的稳定性和拓展性。</li>
+<li>削峰：防止大流量冲击导致系统瘫痪，减少系统压力。</li>
+</ul>
+<p><strong>MQ缺点：</strong></p>
+<ul>
+<li>系统的可用性降低，一旦MQ出现宕机，直接影响业务。</li>
+<li>增加了系统的复杂度，如：保证消息顺序、确保消息不会被重复消费、消息不会丢失等。</li>
+<li>确保消息一致性的问题。</li>
+</ul>
+<h3 id="名词概念"><a href="#名词概念" class="headerlink" title="名词概念"></a>名词概念</h3><p><strong>NameServer</strong>：类似于Zookeeper的注册中心，但是不同的是每个NameServer都不会相互通信，每个NameServer都拥有全部的Broker数据。没有所谓的主从概念。</p>
+<p><strong>Broker</strong>：提供MQ服务，即实现消息存储、转发的组件。会定期向NameServer定期的发送心跳。Broker是向每一台NameServer注册自己的路由信息，所以每一个NameServer实例上面都保存一份完整的路由信息。</p>
+<p><strong>Producer</strong>：消息生产者</p>
+<p><strong>Consumer</strong>：消息消费者，</p>
+<p><strong>延时队列</strong></p>
+<p>社区版的Rocket的延迟队列，毕竟是免费的，所以不支持自定义的延迟队列。但是给出了18个固定的延迟级别。</p>
+<p><strong>消息持久化机制：</strong></p>
+<ul>
+<li><p><strong>同步刷盘（SYNC_FLUSH）：</strong>消息写入到PAGECACHE后，立刻通知刷盘线程刷盘，刷盘线程完成后，返回消息成功消息<strong>「可以保证数据绝对安全，但是吞吐量不大」</strong>。</p>
+</li>
+<li><p><strong>异步刷盘（ASYNC_FLUSH）：</strong>消息写入到内存的 PAGECACHE中，就立刻给客户端返回写操作成功，当 PAGECACHE 中的消息积累到一定的量时，触发一次写操作，将 PAGECACHE 中的消息写入到磁盘中。这种方式<strong>「吞吐量大，性能高，但是 PAGECACHE 中的数据可能丢失，不能保证数据绝对的安全」</strong>。</p>
+</li>
+</ul>
+<h2 id="RocketMQ搭建"><a href="#RocketMQ搭建" class="headerlink" title="RocketMQ搭建"></a>RocketMQ搭建</h2><ul>
+<li>RockerMQ运行在JDK8环境，需要安装JDK。</li>
+</ul>
+<p><strong>1、NameServer配置：runserver.sh</strong></p>
+<p><img src="https://i.loli.net/2020/12/29/h7bQNLz4yaHfrX9.png" alt="RocketMQ_runserver_config.PNG"></p>
+<p>需要将NameServer的JVM虚拟机内存参数调整为</p>
+<p>默认的配置设定的内存空间太大，需要根据个人PC情况设定。</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">JAVA_OPT=<span class="string">&quot;<span class="variable">$&#123;JAVA_OPT&#125;</span> -server -Xms512m -Xmx512m -Xmn256m&quot;</span></span><br></pre></td></tr></table></figure>
+
+<p>启动NameServer:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">nohup bin&#x2F;mqnamesesrv &amp;</span><br><span class="line">tail -f nohup.out ##查看运行结果</span><br></pre></td></tr></table></figure>
+
+<p><strong>2、Broker配置</strong></p>
+<p><strong>修改runbroker.sh</strong></p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">JAVA_OPT=&quot;$&#123;JAVA_OPT&#125; -server -Xms512m -Xmx512m -Xmn256m&quot;</span><br></pre></td></tr></table></figure>
+
+<p>在 <strong>conf/broker.conf</strong> 添加参数</p>
+<p>作用：Broker能够自动创建Topic</p>
+<p>brokerRole = ASYNC_MASTER：在Master记录完消息后即刻返回给客户端，不需要等待Slave同步成功后再返回。</p>
+<p>brokerRole = SYNC_MASTER：在Master与Slave都记录完消息后再刻返回给客户端，Master再返回给客户端。</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">brokerClusterName = DefaultCluster</span><br><span class="line">brokerName = broker-a       <span class="comment">#Broker的名字，如果多个Broker在一个集群，每个Broker名字相同</span></span><br><span class="line">brokerId = 0                <span class="comment">#0表示为Mater，非0都一律表示为Slave</span></span><br><span class="line">deleteWhen = 04             <span class="comment">#删除消息的时间，04表示每天凌晨4点删除消息</span></span><br><span class="line">fileReservedTime = 48       <span class="comment">#保存的消息每48小时会更新一次</span></span><br><span class="line">brokerRole = ASYNC_MASTER   <span class="comment">#Master于Slave同步的机制，这里表示的异步同步</span></span><br><span class="line">flushDiskType = ASYNC_FLUSH <span class="comment">#刷盘方式：异步刷盘</span></span><br><span class="line">autoCreateTopicEnable=<span class="literal">true</span>  <span class="comment">#添加这一行</span></span><br></pre></td></tr></table></figure>
+
+<p><strong>运行Broker：</strong></p>
+<p>执行下面这条命令，-c 会重broker.conf读取配置信息，-n则可以手动输入启动参数</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">nohup bin/mqbroker -c conf/broker.conf &amp;</span><br></pre></td></tr></table></figure>
+
+<p><strong>检查是否都正常启动</strong></p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">jps</span><br><span class="line"><span class="meta">#</span><span class="bash">output</span></span><br><span class="line">25500 BrokerStartup</span><br><span class="line">25545 Jps</span><br><span class="line">17682 NamesrvStartup</span><br></pre></td></tr></table></figure>
+
+<p><strong>关闭NameServer、Broker</strong></p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">sh bin/mqshutdown namesrv</span><br><span class="line">sh bin/mqshutdown broker</span><br></pre></td></tr></table></figure>
+
+
+        
+        <!-------------->
+      </div>
+      <div class="post-tags">
+      
+        <a class="tag-none-link" href="/tags/MQ/" rel="tag">MQ</a>
+      
+    </div>
+    </article>
+  
+</section>
+
+          
+     <nav class="pagination">
+    
+      <a href="/">
+        <span class="prev"><i class="iconfont icon-back"></i>上一页</span>
+      </a>
+    
+    
+      <a href="/page/3/">
+        <span class="next">下一页<i class="iconfont icon-more"></i></span>
+      </a>
+    
+  </nav>
+
+
+          
+
+      </main>
+    </div>
+    <footer>
+      <div class="social-links">
+        
+          
+            <a target="_blank" rel="noopener" href="https://www.zhihu.com/"><i class="iconfont icon-zhihu"></i></a>
+          
+        
+          
+            <a target="_blank" rel="noopener" href="https://weibo.com"><i class="iconfont icon-weibo"></i></a>
+          
+        
+          
+            <a target="_blank" rel="noopener" href="https://github.com/"><i class="iconfont icon-github"></i></a>
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+      </div>
+      
+        <div class="quote">
+          <p>Love all, trust a few, do wrong to none.——William Shakespeare</p>
+        </div>
+      
+      <div class="copyright">
+        <p>
+          由 <a target="_blank" rel="noopener" href="https://hexo.io/">Hexo</a> 强力驱动
+          <span>|</span>
+          主题 - <a target="_blank" rel="noopener" href="https://github.com/wa-ri/hexo-theme-ztopic">ztopic</a
+        </p>
+        <p>
+          <span>
+          
+          &copy;
+          
+            2021
+          
+          </span>
+          <i class="iconfont icon-circle"></i>
+          <span>Shope Huwang</span>
+        </p>
+      </div>
+</footer>
+
+    <div class="back-to-top" id="back-to-top">
+      <i class="iconfont icon-up"></i>
+    </div>
+  </div>
+  <div id="mobile-nav">
+  <nav id="mobile-nav-menu">
+    
+      <a href="/" class="mobile-nav-link"><i class="iconfont icon-home"></i>首页</a>
+    
+      <a href="/archives" class="mobile-nav-link"><i class="iconfont icon-archive"></i>归档</a>
+    
+      <a href="/about" class="mobile-nav-link"><i class="iconfont icon-about"></i>关于</a>
+    
+    <div class="mobile-intro"><i class="iconfont icon-pen"></i>You&#39;ll shine like a diamond</div>
+  </nav>
+</div>
+
+
+  
+<script src="/libs/jQuery/jquery-3.2.1.min.js"></script>
+
+  
+<script src="/libs/slideout/slideout.min.js"></script>
+
+  
+    
+<link rel="stylesheet" href="/libs/fancybox/jquery.fancybox.css">
+
+    
+<script src="/libs/fancybox/jquery.fancybox.pack.js"></script>
+
+  
+  
+
+  
+<script src="/js/ztopic.js"></script>
+
+</body>
+</html>

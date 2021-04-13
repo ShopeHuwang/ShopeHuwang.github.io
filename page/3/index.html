@@ -1,0 +1,442 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <meta name="theme-color" content="#34495e">
+  <title>Shope</title>
+  <link rel="alternate" href="path/of/rss" type="application/atom+xml">
+  <link rel="shortcut icon" type="image/ico" href="/favicon.ico">
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+
+  
+
+  
+
+  
+
+<meta name="generator" content="Hexo 5.4.0"></head>
+
+<body>
+  <div class="mobile-header">
+    <span><i class="iconfont icon-turnon" id="mobile-nav-toggle"></i></span>
+    <div class="mobile-logo">
+      <a href="/.">Shope Huwang</a>
+    </div>
+  </div>
+  <div class="page" id="mobile-nav-panel">
+    <div class="container">
+      <header class="site-nav">
+      <div class="nav-content">
+        <div class="logo">
+          <a href="/">Shope Huwang</a>
+        </div>
+        <nav class="navbar">
+          <ul>
+            
+              <li class="menu-item">
+                <a href="/" class="menu-item-link"><i class="iconfont icon-home"></i>首页</a>
+              </li>
+            
+              <li class="menu-item">
+                <a href="/archives" class="menu-item-link"><i class="iconfont icon-archive"></i>归档</a>
+              </li>
+            
+              <li class="menu-item">
+                <a href="/about" class="menu-item-link"><i class="iconfont icon-about"></i>关于</a>
+              </li>
+            
+          </ul>
+        </nav>
+      </div>
+</header>
+
+      <div class="banner">
+  <div class="show">
+    <!-- <img src="/" alt="banner"> -->
+    <div class="banner-title">
+      
+        <div class="intro">
+          You&#39;ll shine like a diamond
+        </div>
+      
+    </div>
+  </div>
+</div>
+
+      <main class="main"id="main">
+          <section class="posts">
+  
+    <article class="post" id="post-excerpt">
+      <header>
+        <div class="post-title">
+          <h1><a class="post-title-link" href="/2020/12/06/2020-12-06-Spring/">Spring 源码学习</a></h1>
+        </div>
+        <div class="post-meta">
+          <span class="post-time"><i class="iconfont icon-calendar"></i>2020-12-06</span>
+          
+              
+                <i class="iconfont icon-divide"></i>
+                <i class="iconfont icon-folder" style="color: #8a8a8a;"></i>
+                <a class="post-category" href="/categories/Spring/">Spring</a>
+              
+          
+          <!---------------------------------------->
+            
+        <!----------------------------------------->
+        </div>
+      </header>
+      <div class="post-content">
+        <!-------------->
+        
+          <p>[^👦]: Shope write</p>
+<h2 id="一、Spring-IoC-容器加载过程"><a href="#一、Spring-IoC-容器加载过程" class="headerlink" title="一、Spring IoC 容器加载过程"></a>一、Spring IoC 容器加载过程</h2><p>关键名词解释：</p>
+<p><strong>BeanDefinition</strong>：就是BeanFactory用于生产Bean的设计图，定义每个Bean的特性</p>
+<p><strong>BeanFactoryPostProcessor</strong>：用于修改BeanDefinition</p>
+<p><strong>BeanDefinitionRegisterPostProcessor</strong>：用于注册BeanDefinition</p>
+<p><a target="_blank" rel="noopener" href="https://www.processon.com/view/link/5f18298a7d9c0835d38a57c0"><strong>IoC详细流程</strong></a></p>
+<h3 id="1、实例化ApplicationContext–AnnotationConfigApplicationContext"><a href="#1、实例化ApplicationContext–AnnotationConfigApplicationContext" class="headerlink" title="1、实例化ApplicationContext–AnnotationConfigApplicationContext"></a>1、实例化ApplicationContext–AnnotationConfigApplicationContext</h3><h3 id="2、实例化BeanFactory–DefaultListableBeanFactory："><a href="#2、实例化BeanFactory–DefaultListableBeanFactory：" class="headerlink" title="2、实例化BeanFactory–DefaultListableBeanFactory："></a>2、实例化BeanFactory–DefaultListableBeanFactory：</h3><p>在<strong>AnnotationConfigApplicationContext</strong>的<strong>父类构造器</strong>中实例化</p>
+<p><img src="https://i.loli.net/2020/12/16/msa6xjQvr8l3GDe.png" alt="DefaultListableBeanFactory_relationship.PNG"></p>
+<ul>
+<li><strong>DefaultListableBeanFactory</strong>是<strong>BeanDefinitionRegistry</strong>的实现类<ul>
+<li><strong>BeanDefinitionRegistry</strong>：用于注册BeanDefinition(Bean定义)</li>
+</ul>
+</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="title">GenericApplicationContext</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="keyword">this</span>.customClassLoader = <span class="keyword">false</span>;</span><br><span class="line">    <span class="keyword">this</span>.refreshed = <span class="keyword">new</span> AtomicBoolean();</span><br><span class="line">    <span class="keyword">this</span>.beanFactory = <span class="keyword">new</span> DefaultListableBeanFactory();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="3、实例化BeanDefinitionReader–AnnotatedBeanDefinitionReader："><a href="#3、实例化BeanDefinitionReader–AnnotatedBeanDefinitionReader：" class="headerlink" title="3、实例化BeanDefinitionReader–AnnotatedBeanDefinitionReader："></a>3、实例化BeanDefinitionReader–AnnotatedBeanDefinitionReader：</h3><p>在<strong>AnnotationConfigApplicationContext</strong>构造器中实例化</p>
+<h4 id="3-1实例化“创世纪”的Bean"><a href="#3-1实例化“创世纪”的Bean" class="headerlink" title="3.1实例化“创世纪”的Bean"></a>3.1实例化“创世纪”的Bean</h4><p>​        进入路径：    <strong>AnnotatedBeanDefinitionReader</strong>文件的<strong>AnnotationConfigUtils.registerAnnotationConfigProcessors(this.registry);</strong></p>
+<p>​                                👇</p>
+<p>​                                <strong>AnnotationConfigUtils</strong>文件的 <strong>registerAnnotationConfigProcessovrs</strong></p>
+<h5 id="1-gt-配置类的后置处理器：ConfigurationClassPostProcessor"><a href="#1-gt-配置类的后置处理器：ConfigurationClassPostProcessor" class="headerlink" title="1&gt; 配置类的后置处理器：ConfigurationClassPostProcessor"></a>1&gt; 配置类的后置处理器：ConfigurationClassPostProcessor</h5><h5 id="2-gt-internalAutowiredAnnotationProcessor：用于解析-Configuration、-ComponentScan、-ComponentScans以及-Import注解"><a href="#2-gt-internalAutowiredAnnotationProcessor：用于解析-Configuration、-ComponentScan、-ComponentScans以及-Import注解" class="headerlink" title="2&gt; internalAutowiredAnnotationProcessor：用于解析@Configuration、@ComponentScan、@ComponentScans以及@Import注解"></a>2&gt; internalAutowiredAnnotationProcessor：用于解析@Configuration、@ComponentScan、@ComponentScans以及@Import注解</h5><h5 id="3-gt-internalAutowiredAnnotationProcessor：解析-Autowired、-Value注解"><a href="#3-gt-internalAutowiredAnnotationProcessor：解析-Autowired、-Value注解" class="headerlink" title="3&gt;internalAutowiredAnnotationProcessor：解析@Autowired、@Value注解"></a>3&gt;internalAutowiredAnnotationProcessor：解析@Autowired、@Value注解</h5><h5 id="4-gt-internalEventListenerProcessor：Spring事件的监听"><a href="#4-gt-internalEventListenerProcessor：Spring事件的监听" class="headerlink" title="4&gt;internalEventListenerProcessor：Spring事件的监听"></a>4&gt;internalEventListenerProcessor：Spring事件的监听</h5><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> Set&lt;BeanDefinitionHolder&gt; <span class="title">registerAnnotationConfigProcessors</span><span class="params">(BeanDefinitionRegistry registry, <span class="meta">@Nullable</span> Object source)</span> </span>&#123;</span><br><span class="line">    .....</span><br><span class="line"><span class="keyword">if</span> (!registry.containsBeanDefinition(<span class="string">&quot;org.springframework.context.annotation.internalConfigurationAnnotationProcessor&quot;</span>)) &#123;</span><br><span class="line">    		<span class="comment">//	实例化配置类的后置处理器ConfigurationClassPostProcessor</span></span><br><span class="line">            def = <span class="keyword">new</span> RootBeanDefinition(ConfigurationClassPostProcessor.class);</span><br><span class="line">            def.setSource(source);</span><br><span class="line">            beanDefs.add(registerPostProcessor(registry, def, <span class="string">&quot;org.springframework.context.annotation.internalConfigurationAnnotationProcessor&quot;</span>));<span class="comment">//这个类用于解析配置类信息</span></span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">if</span> (!registry.containsBeanDefinition(<span class="string">&quot;org.springframework.context.annotation.internalAutowiredAnnotationProcessor&quot;</span>)) &#123;</span><br><span class="line">            def = <span class="keyword">new</span> RootBeanDefinition(AutowiredAnnotationBeanPostProcessor.class);</span><br><span class="line">            def.setSource(source);</span><br><span class="line">            beanDefs.add(registerPostProcessor(registry, def, <span class="string">&quot;org.springframework.context.annotation.internalAutowiredAnnotationProcessor&quot;</span>));</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">if</span> (jsr250Present &amp;&amp; !registry.containsBeanDefinition(<span class="string">&quot;org.springframework.context.annotation.internalCommonAnnotationProcessor&quot;</span>)) &#123;</span><br><span class="line">            def = <span class="keyword">new</span> RootBeanDefinition(CommonAnnotationBeanPostProcessor.class);</span><br><span class="line">            def.setSource(source);</span><br><span class="line">            beanDefs.add(registerPostProcessor(registry, def, <span class="string">&quot;org.springframework.context.annotation.internalCommonAnnotationProcessor&quot;</span>));</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">if</span> (jpaPresent &amp;&amp; !registry.containsBeanDefinition(<span class="string">&quot;org.springframework.context.annotation.internalPersistenceAnnotationProcessor&quot;</span>)) &#123;</span><br><span class="line">            def = <span class="keyword">new</span> RootBeanDefinition();</span><br><span class="line"></span><br><span class="line">            <span class="keyword">try</span> &#123;</span><br><span class="line">                def.setBeanClass(ClassUtils.forName(<span class="string">&quot;org.springframework.orm.jpa.support.PersistenceAnnotationBeanPostProcessor&quot;</span>, AnnotationConfigUtils.class.getClassLoader()));<span class="comment">//	实例化Bean的后置处理器</span></span><br><span class="line">            &#125; <span class="keyword">catch</span> (ClassNotFoundException var6) &#123;</span><br><span class="line">                <span class="keyword">throw</span> <span class="keyword">new</span> IllegalStateException(<span class="string">&quot;Cannot load optional framework class: org.springframework.orm.jpa.support.PersistenceAnnotationBeanPostProcessor&quot;</span>, var6);</span><br><span class="line">            &#125;</span><br><span class="line"></span><br><span class="line">            def.setSource(source);</span><br><span class="line">            beanDefs.add(registerPostProcessor(registry, def, <span class="string">&quot;org.springframework.context.annotation.internalPersistenceAnnotationProcessor&quot;</span>));</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">if</span> (!registry.containsBeanDefinition(<span class="string">&quot;org.springframework.context.event.internalEventListenerProcessor&quot;</span>)) &#123;</span><br><span class="line">            def = <span class="keyword">new</span> RootBeanDefinition(EventListenerMethodProcessor.class);</span><br><span class="line">            def.setSource(source);</span><br><span class="line">            beanDefs.add(registerPostProcessor(registry, def, <span class="string">&quot;org.springframework.context.event.internalEventListenerProcessor&quot;</span>));</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">if</span> (!registry.containsBeanDefinition(<span class="string">&quot;org.springframework.context.event.internalEventListenerFactory&quot;</span>)) &#123;</span><br><span class="line">            def = <span class="keyword">new</span> RootBeanDefinition(DefaultEventListenerFactory.class);</span><br><span class="line">            def.setSource(source);</span><br><span class="line">            beanDefs.add(registerPostProcessor(registry, def, <span class="string">&quot;org.springframework.context.event.internalEventListenerFactory&quot;</span>));</span><br><span class="line">        &#125;</span><br><span class="line">    .....</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="4、实例化BeanDefinitionScanner–ClassPathBeanDefinitionScanner："><a href="#4、实例化BeanDefinitionScanner–ClassPathBeanDefinitionScanner：" class="headerlink" title="4、实例化BeanDefinitionScanner–ClassPathBeanDefinitionScanner："></a>4、实例化BeanDefinitionScanner–ClassPathBeanDefinitionScanner：</h3><p><strong>在AnnotationConfigApplicationContext<a href="">构造器中</a>实例化</strong></p>
+<h3 id="5、注册配置类为BeanDefinitio–AnnotatedGenericBeanDefinition"><a href="#5、注册配置类为BeanDefinitio–AnnotatedGenericBeanDefinition" class="headerlink" title="5、注册配置类为BeanDefinitio–AnnotatedGenericBeanDefinition"></a>5、注册配置类为BeanDefinitio–AnnotatedGenericBeanDefinition</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="title">AnnotationConfigApplicationContext</span><span class="params">(Class&lt;?&gt;... componentClasses)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">this</span>();</span><br><span class="line">    <span class="keyword">this</span>.register(componentClasses); <span class="comment">//在这个方法中注册，这个一个门面方法</span></span><br><span class="line">    <span class="keyword">this</span>.refresh();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="6、进入到AnnotationConfigApplicationContext-Class-lt-gt-…-componentClasses-的第三行代码：refresh"><a href="#6、进入到AnnotationConfigApplicationContext-Class-lt-gt-…-componentClasses-的第三行代码：refresh" class="headerlink" title="6、进入到AnnotationConfigApplicationContext(Class&lt;?&gt;… componentClasses)的第三行代码：refresh()"></a>6、进入到AnnotationConfigApplicationContext(Class&lt;?&gt;… componentClasses)的第三行代码：refresh()</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">refresh</span><span class="params">()</span> <span class="keyword">throws</span> BeansException, IllegalStateException </span>&#123;</span><br><span class="line">        <span class="keyword">synchronized</span>(<span class="keyword">this</span>.startupShutdownMonitor) &#123;</span><br><span class="line">            <span class="comment">//刷新预处理，保存了容器的启动时间，启动标志等</span></span><br><span class="line">            <span class="keyword">this</span>.prepareRefresh();</span><br><span class="line">            ConfigurableListableBeanFactory beanFactory = <span class="keyword">this</span>.obtainFreshBeanFactory();</span><br><span class="line">            </span><br><span class="line">            <span class="keyword">this</span>.prepareBeanFactory(beanFactory);</span><br><span class="line">            <span class="keyword">try</span> &#123;</span><br><span class="line">                <span class="keyword">this</span>.postProcessBeanFactory(beanFactory);</span><br><span class="line">                <span class="keyword">this</span>.invokeBeanFactoryPostProcessors(beanFactory);</span><br><span class="line">                <span class="keyword">this</span>.registerBeanPostProcessors(beanFactory);</span><br><span class="line">                <span class="keyword">this</span>.initMessageSource();</span><br><span class="line">                <span class="keyword">this</span>.initApplicationEventMulticaster();</span><br><span class="line">                <span class="keyword">this</span>.onRefresh();</span><br><span class="line">                <span class="keyword">this</span>.registerListeners();</span><br><span class="line">                <span class="keyword">this</span>.finishBeanFactoryInitialization(beanFactory);</span><br><span class="line">                <span class="keyword">this</span>.finishRefresh();</span><br><span class="line">            &#125; <span class="keyword">catch</span> (BeansException var9) &#123;</span><br><span class="line">                <span class="keyword">if</span> (<span class="keyword">this</span>.logger.isWarnEnabled()) &#123;</span><br><span class="line">         		 .....</span><br><span class="line">                &#125;</span><br><span class="line">                <span class="keyword">this</span>.destroyBeans();</span><br><span class="line">                <span class="keyword">this</span>.cancelRefresh(var9);</span><br><span class="line">                <span class="keyword">throw</span> var9;</span><br><span class="line">            &#125; <span class="keyword">finally</span> &#123;</span><br><span class="line">                <span class="keyword">this</span>.resetCommonCaches();</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+
+
+
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"> <span class="function"><span class="keyword">protected</span> <span class="keyword">void</span> <span class="title">invokeBeanFactoryPostProcessors</span><span class="params">(ConfigurableListableBeanFactory beanFactory)</span> </span>&#123;</span><br><span class="line"><span class="comment">// BeanFactoryPostProcessor可以手动添加，即：annotationConfigApplicationContext.addBeanFactoryPostProcessor(XXX);</span></span><br><span class="line">     PostProcessorRegistrationDelegate.invokeBeanFactoryPostProcessors(beanFactory, <span class="keyword">this</span>.getBeanFactoryPostProcessors());</span><br><span class="line">     <span class="keyword">if</span> (beanFactory.getTempClassLoader() == <span class="keyword">null</span> &amp;&amp; beanFactory.containsBean(<span class="string">&quot;loadTimeWeaver&quot;</span>)) &#123;</span><br><span class="line">         beanFactory.addBeanPostProcessor(<span class="keyword">new</span> LoadTimeWeaverAwareProcessor(beanFactory));</span><br><span class="line">         beanFactory.setTempClassLoader(<span class="keyword">new</span> ContextTypeMatchClassLoader(beanFactory.getBeanClassLoader()));</span><br><span class="line">     &#125;</span><br><span class="line"> &#125;</span><br></pre></td></tr></table></figure>
+
+
+
+<h4 id="循环依赖"><a href="#循环依赖" class="headerlink" title="循环依赖"></a>循环依赖</h4><ul>
+<li>Spring解决循环依赖问题只对于Singleton模式下的，多例无法解决循环依赖问题。</li>
+</ul>
+<p>​    A需要注入B，B有需要A的注入。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">A</span></span>&#123;</span><br><span class="line">  <span class="meta">@Autowird</span></span><br><span class="line">  <span class="class"><span class="keyword">class</span> <span class="title">B</span></span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">B</span></span>&#123;</span><br><span class="line"><span class="meta">@Autowird</span></span><br><span class="line">  <span class="class"><span class="keyword">class</span> <span class="title">A</span></span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>一级缓存：singletonObject（ConcurrentHashMap）<strong>单例缓存池</strong> ，用于存放<strong>成熟</strong>(已经完成赋值)的Bean。</p>
+<p>二级缓存：earlySingletonObject （HashMap） 解决循环依赖，用于存<strong>储纯净态</strong>(没有赋值)的Bean。</p>
+<p>三级缓存：singletonFactories （HashMap）AOP，代码解耦。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 一级缓存 也叫 单例池</span></span><br><span class="line"><span class="keyword">private</span> <span class="keyword">final</span> Map&lt;String, Object&gt; singletonObjects = <span class="keyword">new</span> ConcurrentHashMap&lt;String, Object&gt;(<span class="number">256</span>);</span><br><span class="line"><span class="comment">//	三级缓存</span></span><br><span class="line"><span class="keyword">private</span> <span class="keyword">final</span> Map&lt;String, ObjectFactory&lt;?&gt;&gt; singletonFactories = <span class="keyword">new</span> HashMap&lt;String, ObjectFactory&lt;?&gt;&gt;(<span class="number">16</span>);</span><br><span class="line"><span class="comment">// 二级缓存</span></span><br><span class="line"><span class="keyword">private</span> <span class="keyword">final</span> Map&lt;String, Object&gt; earlySingletonObjects = <span class="keyword">new</span> HashMap&lt;String, Object&gt;(<span class="number">16</span>);</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><p>判断是否为循环依赖的标志：二级缓存的Map为null。</p>
+<p><strong>问题：Spring如何避免读取到不完整的Bean?</strong></p>
+<p>需要使用二级缓存以及锁，在对象初始化过程中，另一个线程会到单例池中获取对象，如果对象为null且对象正在创建，会阻塞线程，等待到线程恢复后，再到二级缓存中获取，获取到值就返回。值得注意的是：此时的对象是纯净态的，在赋值后该对象会被添加到一级缓存，并移除二级缓存中的对象。在对象为纯净态的时候返回的是对象的引用，在对象赋值后，该引用就是成熟的对象。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// source code 做一个 double check</span></span><br><span class="line">   <span class="function"><span class="keyword">protected</span> Object <span class="title">getSingleton</span><span class="params">(String beanName, <span class="keyword">boolean</span> allowEarlyReference)</span> </span>&#123;</span><br><span class="line">       Object singletonObject = <span class="keyword">this</span>.singletonObjects.get(beanName);</span><br><span class="line">       <span class="comment">//	第一次检查：判断单例是否为null 且 单例是否正在创建</span></span><br><span class="line">       <span class="keyword">if</span> (singletonObject == <span class="keyword">null</span> &amp;&amp; <span class="keyword">this</span>.isSingletonCurrentlyInCreation(beanName)) &#123;</span><br><span class="line">           <span class="comment">//	锁住单例池对象</span></span><br><span class="line">           <span class="keyword">synchronized</span>(<span class="keyword">this</span>.singletonObjects) &#123;</span><br><span class="line">               <span class="comment">//	从 二级缓存 中获取对象</span></span><br><span class="line">               singletonObject = <span class="keyword">this</span>.earlySingletonObjects.get(beanName);</span><br><span class="line">                <span class="comment">//	做第二次检查，再判断获取的对象是否为null</span></span><br><span class="line">               <span class="keyword">if</span> (singletonObject == <span class="keyword">null</span> &amp;&amp; allowEarlyReference) &#123;</span><br><span class="line">                   ObjectFactory&lt;?&gt; singletonFactory = (ObjectFactory)<span class="keyword">this</span>.singletonFactories.get(beanName);</span><br><span class="line">                   <span class="keyword">if</span> (singletonFactory != <span class="keyword">null</span>) &#123;</span><br><span class="line">                       <span class="comment">//	返回 纯净态 的对象</span></span><br><span class="line">                       singletonObject = singletonFactory.getObject</span><br><span class="line">                           <span class="comment">//	将对象添加到 二级缓存</span></span><br><span class="line">                       <span class="keyword">this</span>.earlySingletonObjects.put(beanName, singletonObject);</span><br><span class="line">                       <span class="keyword">this</span>.singletonFactories.remove(beanName);</span><br><span class="line">                   &#125;</span><br><span class="line">               &#125;</span><br><span class="line">           &#125;</span><br><span class="line">       &#125;</span><br><span class="line">        <span class="keyword">return</span> singletonObject;</span><br><span class="line">   &#125;</span><br></pre></td></tr></table></figure></li>
+</ul>
+<p>在Spring内部，把带上了**@Configuration<strong>的配置类称之为</strong>Full配置类<strong>，把没有带上@Configuration，但是带上了@Component @ComponentScan @Import @ImportResource等注解的配置类称之为</strong>Lite配置类**。</p>
+<h4 id="问题："><a href="#问题：" class="headerlink" title="问题："></a>问题：</h4><h5 id="BeanFactory"><a href="#BeanFactory" class="headerlink" title="BeanFactory:"></a><strong>BeanFactory:</strong></h5><p>是一个Bean工厂，是Spring顶层的核心接口，其作用是根据BeanDefinition初始化Bean。</p>
+<h5 id="BeanFactory与ApplicationContext"><a href="#BeanFactory与ApplicationContext" class="headerlink" title="BeanFactory与ApplicationContext:"></a><strong>BeanFactory与ApplicationContext:</strong></h5><p>BeanFactory专注于生产Bean，最大的职责是生产Bean。ApplicationContext会获取Bean的配置，注册BeanDefinition定义Bean，参数注入等，最后调用BeanFactory的getBean()方法生产Bean。</p>
+<h5 id="BeanFactory和FactoryBean的区别："><a href="#BeanFactory和FactoryBean的区别：" class="headerlink" title="BeanFactory和FactoryBean的区别："></a><strong>BeanFactory和FactoryBean的区别：</strong></h5><p>BeanFactory用于生产Bean,而FactoryBean用于修改原来的Bean，并返回一个新的Bean。</p>
+<p>配置类：xml配置、注解。</p>
+<p>XML：new ClassPathXmlApplicationCopntext(“xml”);</p>
+<p>注解：AnnotationConfigApplicationContext(XXXBean.class)</p>
+<p><strong>BeanDefinition</strong>：设置Bean的加载方式，生命周期等。(相当于bean的设计图)</p>
+<p><strong>BeanDefinitionRegistry</strong>：注册Bean定义（注册bean的设计图）</p>
+<p><strong>BeanFactory</strong> ：负责生产Bean，使用简单工厂方法实现。（根据设计图生产bean）</p>
+<h3 id="Spring-Envent"><a href="#Spring-Envent" class="headerlink" title="Spring Envent"></a>Spring Envent</h3><p><a target="_blank" rel="noopener" href="https://www.processon.com/view/link/5f5075c763768959e2d109df#map">https://www.processon.com/view/link/5f5075c763768959e2d109df#map</a></p>
+<h2 id="二、Spring-AOP"><a href="#二、Spring-AOP" class="headerlink" title="二、Spring AOP"></a>二、Spring AOP</h2><p>1.连接点（Join point）：连接点是在应用执行过程中能够插入切面（Aspect）的一个点。这些点可以是调用方法时、甚至修改一个字段时。</p>
+<p>2.切点（Pointcut）：切点是指通知（Advice）所要织入（Weaving）的具体位置。</p>
+<p>理解：连接点是一个虚拟的概念，可以理解为所有满足<strong>切点</strong>扫描条件的所有的时机。</p>
+<h4 id="AOP"><a href="#AOP" class="headerlink" title="AOP"></a>AOP</h4><ul>
+<li>基于动态代理来实现，默认：如果使用接口，则 JDK 提供动态代理实现；如果没有接口，使用CGLIB实现；</li>
+<li>Spring AOP 依赖于 IoC  。</li>
+<li>Spring AOP 只能只能作用于Spring 容器中的Bean ，使用Java代码实现，只能作用于Bean方法。</li>
+</ul>
+<h4 id="AspectJ"><a href="#AspectJ" class="headerlink" title="AspectJ"></a>AspectJ</h4><p>来自于 Eclipse 基金会，link：<a target="_blank" rel="noopener" href="https://www.eclipse.org/aspectj">https://www.eclipse.org/aspectj</a> 属于静态织入，它是通过修改代码来实现的，</p>
+<p>它的织入时机可以是： </p>
+<ul>
+<li>Compile-time weaving：编译期织入，如类 A 使用 AspectJ 添加了一个属性，类 B 引 用了它，这个场景就需要编译期的时候就进行织入，否则没法编译类 B。 </li>
+</ul>
+<ul>
+<li>Post-compile weaving：编译后织入，也就是已经生成了 .class 文件，或已经打成 jar 包 了，这种情况我们需要增强处理的话，就要用到编译后织入。</li>
+</ul>
+<ul>
+<li><p>Load-time weaving：指的是在加载类的时候进行织入，要实现这个时期的织入，有几 种常见的方法。</p>
+<p>​    1、自定义类加载器来干这个，这个应该是最容易想到的办法，在被织入类加 载到 JVM 前去对它进行加载，这样就可以在加载的时候定义行为了。</p>
+<p>​    2、在 JVM 启动的时候 指定 AspectJ 提供的 agent：-javaagent:xxx/xxx/aspectjweaver.jar</p>
+</li>
+</ul>
+<h4 id="Spring-AOP"><a href="#Spring-AOP" class="headerlink" title="Spring AOP"></a>Spring AOP</h4><p>  Spring AOP 一共有三种配置方式，Spring 做到了很好地向下兼容，所以版本版本更新不需要担心代码重构。 </p>
+<p>  Spring 1.2 基于接口的配置：最早的 Spring AOP 是完全基于几个接口（MethodBeforeAdvice、MethodInterceptor）</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//	实现	MethodBeforeAdvice 类似 前置通知 @Before</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">TulingLogAdvice</span> <span class="keyword">implements</span> <span class="title">MethodBeforeAdvice</span> </span>&#123;</span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">before</span><span class="params">(Method method, Object[] args, Object target)</span> <span class="keyword">throws</span> Throwable </span>&#123;</span><br><span class="line">        String methodName = method.getName();</span><br><span class="line">        System.out.println(<span class="string">&quot;执行目标方法【&quot;</span> + methodName + <span class="string">&quot;】的&lt;前置通知&gt;,入参&quot;</span> + Arrays.asList(args));</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//	实现 MethodInterceptor	类似 环绕置通知 @Around</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">TulingLogInterceptor</span> <span class="keyword">implements</span> <span class="title">MethodInterceptor</span> </span>&#123;</span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> Object <span class="title">invoke</span><span class="params">(MethodInvocation invocation)</span> <span class="keyword">throws</span> Throwable </span>&#123;</span><br><span class="line">        System.out.println(getClass()+<span class="string">&quot;调用方法前&quot;</span>);</span><br><span class="line">        Object ret=invocation.proceed();</span><br><span class="line">        System.out.println(getClass()+<span class="string">&quot;调用方法后&quot;</span>);</span><br><span class="line">        <span class="keyword">return</span> ret;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>​    Spring 2.0 schema-based 配置：Spring 2.0 以后使用 XML 的方式来配置，使用 命名空间  </p>
+<p>​    Spring 2.0 @AspectJ 配置：使用注解的方式来配置。</p>
+<p><strong>基于注解的配置：</strong></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Aspect</span></span><br><span class="line"><span class="meta">@Component</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">BuyAspectJ</span> </span>&#123;</span><br><span class="line">    <span class="comment">//	让 com.shope.XXXServiceImpl 实现 om.shope.UserService 接口</span></span><br><span class="line">    <span class="meta">@DeclareParents(value=&quot;com.shope.UserService&quot;,defaultImpl=com.shope.XXXServiceImpl.class)</span></span><br><span class="line">    <span class="keyword">private</span> XXXService service;</span><br><span class="line">    <span class="comment">//	定义切点</span></span><br><span class="line">    <span class="comment">//	AspectJ切点表达式：exection( 返回值 包名.方法名(参数类型) &amp;&amp; arg(参数名) &amp;&amp; bean(目标对象))</span></span><br><span class="line">    <span class="meta">@Pointcut(&quot;execution(String com.sharpcj.aopdemo.test1.IBuy.buy(double)) &amp;&amp; args(price) &amp;&amp; bean(girl)&quot;)</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">gif</span><span class="params">(<span class="keyword">double</span> price)</span> </span>&#123;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="comment">//	定义通知类型：@Around | @Before | @After | @AfterReturning |  @AfterThrowing</span></span><br><span class="line">     <span class="meta">@Around(&quot;gif(price)&quot;)</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> String <span class="title">price</span><span class="params">(ProceedingJoinPoint pj, <span class="keyword">double</span> price)</span></span>&#123;</span><br><span class="line">      <span class="comment">// 声明了一个切点表达式，该方法 price 的内容并不重要，方法名也不重要，实际上它只是作为一个标识，供通知使用。</span></span><br><span class="line">        <span class="keyword">return</span> <span class="string">&quot;XXX&quot;</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>责任链的调用@Aspect的类解析，</p>
+<p>解析切面：将所有带有</p>
+<p>advisor里面有advise和pointCut（advise 为 @Before之类注解的代码）</p>
+<p>有接口使用JDK动态代理，JDK动态代理调用方法使用反射的方式。</p>
+<p>没有接口使用CGLIB动态代理，CGLIB使用ASM创建字节码文件，使用继承实现。</p>
+<p><strong>JDK的动态代理调用动态代理类中的方法是不会触发第二次动态代理的。</strong></p>
+<p><strong>CGLIB动态代理种设置 @EnableAspectJAutoProxy(exporse = true)，可以实现调用代理配置类中的其他方法会触发动态代理。</strong></p>
+<h2 id="三、Spring声明式事务"><a href="#三、Spring声明式事务" class="headerlink" title="三、Spring声明式事务"></a>三、Spring声明式事务</h2><p><strong>@EnableTransactionManagement：开启事务</strong></p>
+<p><strong>@EnableAspjectJAutoProxy( exposeProxy = true )</strong> 暴露事务</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//	在事务A中调用事务B，事务 A、B都在同一个类中</span></span><br><span class="line"><span class="comment">//	调用 xxxService 的 XXXMethod方法，才能正确嵌套两个事务</span></span><br><span class="line"> ((xxxService)AopContext.currentProxy()).XXXMethod();</span><br></pre></td></tr></table></figure>
+
+<p><strong>@Transactional 配置属性</strong></p>
+<p>​        <strong>isolation</strong>：设置事务的隔离级别</p>
+<p>​        <strong>propagation</strong>：事务的传播行为</p>
+<p>​        <strong>noRollbackFor</strong>：那些异常事务可以不回滚</p>
+<p>​        <strong>noRollbackForClassName</strong>：填写的参数是全类名</p>
+<p>​        <strong>rollbackFor</strong>：哪些异常事务需要回滚</p>
+<p>​        <strong>rollbackForClassName</strong>：填写的参数是全类名</p>
+<p>​        <strong>readOnly</strong>：设置事务是否为只读事务        </p>
+<p>​        <strong>timeout</strong>：事务超出指定执行时长后自动终止并回滚,单位是秒</p>
+<p>@Transactional可以标注在类、方法、父类、接口上，Spring解析机制都会去解析到。</p>
+<p><strong>1、设置隔离级别（isolation）</strong></p>
+<p>用来解决并发事务所产生一些问题：</p>
+<p>并发： 同一个时间，多个线程同时进行请求。</p>
+<p>什么时候会生成并发问题：在并发情况下，对同一个数据（变量、对象）进行读写操作才会产生并发问题</p>
+<p>并发会产生什么问题？</p>
+<p>1.脏读    2.不可重复度    3.幻影读</p>
+<p><strong>使用情景：</strong></p>
+<p>​    1、一个事务，读取了另一个事务中没有提交的数据，会在本事务中产生的数据不一致的问题</p>
+<p>​        解决方式：@Transactional(isolation = Isolation.<strong>READ_COMMITTED</strong>)</p>
+<p>​    2、一个事务中，多次读取相同的数据， 但是读取的结果不一样，  会在本事务中产生数据不一致的问题。</p>
+<p>​        解决方式：@Transactional(isolation = Isolation.<strong>REPEATABLE_READ</strong>)</p>
+<p>​    3、一个事务中，多次对数据进行整表数据读取（统计），但是结果不一样， 会在本事务中产生数据不一致的问题。</p>
+<p>​            解决方式：@Transactional(isolation = Isolation.<strong>SERIALIZABLE</strong>)</p>
+<p><strong>隔离级别比较</strong></p>
+<p>​    并发安全：SERIALIZABLE &gt; REPEATABLE_READ &gt; READ_COMMITTED </p>
+<p>​    运行效率：READ_COMMITTED &gt; REPEATABLE_READ  &gt; SERIALIZABLE              </p>
+<p><strong>2、事务的传播特性</strong></p>
+<table>
+<thead>
+<tr>
+<th><strong>事务传播行为类型</strong></th>
+<th><strong>外部不存在事务</strong></th>
+<th><strong>外部存在事务</strong></th>
+<th><strong>使用方式</strong></th>
+</tr>
+</thead>
+<tbody><tr>
+<td>REQUIRED（默认）</td>
+<td>开启新的事务</td>
+<td>融合到外部事务中</td>
+<td>@Transactional(propagation = Propagation.REQUIRED)适用增删改查</td>
+</tr>
+<tr>
+<td>SUPPORTS</td>
+<td>不开启新的事务</td>
+<td>融合到外部事务中</td>
+<td>@Transactional(propagation = Propagation.SUPPORTS)适用查询</td>
+</tr>
+<tr>
+<td>REQUIRES_NEW</td>
+<td>开启新的事务</td>
+<td>挂起外部事务，创建新的事务</td>
+<td>@Transactional(propagation = Propagation.REQUIRES_NEW)适用内部事务和外部事务不存在业务关联情况，如日志</td>
+</tr>
+<tr>
+<td>NOT_SUPPORTED</td>
+<td>不开启新的事务</td>
+<td>挂起外部事务</td>
+<td>@Transactional(propagation = Propagation.NOT_SUPPORTED)不常用</td>
+</tr>
+<tr>
+<td>NEVER</td>
+<td>不开启新的事务</td>
+<td>抛出异常</td>
+<td>@Transactional(propagation = Propagation.NEVER )不常用</td>
+</tr>
+<tr>
+<td>MANDATORY</td>
+<td>抛出异常</td>
+<td>融合到外部事务中</td>
+<td>@Transactional(propagation = Propagation.MANDATORY)不常用</td>
+</tr>
+<tr>
+<td>NESTED</td>
+<td>开启新的事务</td>
+<td>融合到外部事务中,SavePoint机制，外层影响内层， 内层不会影响外层</td>
+<td>@Transactional(propagation = Propagation.NESTED)不常用</td>
+</tr>
+</tbody></table>
+<p><strong>3、超时属性(timeout)</strong></p>
+<p>指定事务等待的最长时间（秒）</p>
+<p>当前事务访问数据时，有可能访问的数据被别的数据进行加锁的处理，那么此时事务就必须等待，如果等待时间过长给用户造成的体验感差。</p>
+<p><strong>4、设置事务只读(readOnly)</strong></p>
+<p>**readonly:**只会设置在查询的业务方法中</p>
+<p>​        如果你一次执行单条查询语句，则没有必要启用事务支持，数据库默认支持SQL执行期间的读一致性；</p>
+<p>​        如果你一次执行多条查询语句，例如统计查询，报表查询，在这种场景下，多条查询SQL必须保证整体的读一致性，否则，在前条SQL查询之后，后条SQL查询之前，数据被其他用户改变，则该次整体的统计查询将会出现读数据不一致的状态，此时，应该启用事务支持（如：设置不可重复度、幻影读级别）。</p>
+<p>​        对于只读事务，可以指定事务类型为readonly，即只读事务。由于只读事务不存在数据的修改，因此数据库将会为只读事务提供一些优化手段 </p>
+<p><strong>5、异常属性</strong></p>
+<p>设置 当前事务出现的那些异常就进行回滚或者提交。</p>
+<p>默认对于RuntimeException 及其子类 采用的是回滚的策略。</p>
+<p>默认对于Exception 及其子类 采用的是提交的策略。 </p>
+<p> <strong>1 &gt;设置哪些异常不回滚(noRollbackFor)</strong> </p>
+<p>  <strong>2&gt;设置哪些异常回滚（rollbackFor ）</strong></p>
+<p>@Transactional(timeout = 3,rollbackFor = {FileNotFoundException.class})</p>
+<p><strong>6、在实战中事务的使用方式</strong></p>
+<ul>
+<li><p>如果当前业务方法是一组 增、改、删  可以这样设置事务</p>
+<p>@Transactional</p>
+</li>
+<li><p>如果当前业务方法是一组 查询  可以这样设置事务</p>
+<p>@Transactionl(readOnly=true)</p>
+</li>
+<li><p>如果当前业务方法是单个 查询  可以这样设置事务</p>
+<p>@Transactionl(propagation=propagation.SUPPORTS ,readOnly=true)</p>
+</li>
+</ul>
+<p><strong>基于xml的事务配置</strong></p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">beans</span> <span class="attr">xmlns</span>=<span class="string">&quot;http://www.springframework.org/schema/beans&quot;</span></span></span><br><span class="line"><span class="tag">      <span class="attr">xmlns:xsi</span>=<span class="string">&quot;http://www.w3.org/2001/XMLSchema-instance&quot;</span></span></span><br><span class="line"><span class="tag">      <span class="attr">xmlns:context</span>=<span class="string">&quot;http://www.springframework.org/schema/context&quot;</span></span></span><br><span class="line"><span class="tag">      <span class="attr">xmlns:aop</span>=<span class="string">&quot;http://www.springframework.org/schema/aop&quot;</span></span></span><br><span class="line"><span class="tag">      <span class="attr">xmlns:tx</span>=<span class="string">&quot;http://www.springframework.org/schema/tx&quot;</span></span></span><br><span class="line"><span class="tag">      <span class="attr">xsi:schemaLocation</span>=<span class="string">&quot;http://www.springframework.org/schema/beans</span></span></span><br><span class="line"><span class="tag"><span class="string">      http://www.springframework.org/schema/beans/spring-beans.xsd</span></span></span><br><span class="line"><span class="tag"><span class="string">      http://www.springframework.org/schema/context</span></span></span><br><span class="line"><span class="tag"><span class="string">      http://www.springframework.org/schema/context/spring-context.xsd</span></span></span><br><span class="line"><span class="tag"><span class="string">      http://www.springframework.org/schema/aop</span></span></span><br><span class="line"><span class="tag"><span class="string">      https://www.springframework.org/schema/aop/spring-aop.xsd</span></span></span><br><span class="line"><span class="tag"><span class="string">      http://www.springframework.org/schema/tx</span></span></span><br><span class="line"><span class="tag"><span class="string">      https://www.springframework.org/schema/tx/spring-tx.xsd&quot;</span>&gt;</span></span><br><span class="line">   <span class="tag">&lt;<span class="name">context:component-scan</span> <span class="attr">base-package</span>=<span class="string">&quot;cn.tulingxueyuan&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">context:component-scan</span>&gt;</span></span><br><span class="line">   <span class="tag">&lt;<span class="name">context:property-placeholder</span> <span class="attr">location</span>=<span class="string">&quot;classpath:dbconfig.properties&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">context:property-placeholder</span>&gt;</span></span><br><span class="line">   <span class="tag">&lt;<span class="name">bean</span> <span class="attr">id</span>=<span class="string">&quot;dataSource&quot;</span> <span class="attr">class</span>=<span class="string">&quot;com.alibaba.druid.pool.DruidDataSource&quot;</span>&gt;</span></span><br><span class="line">       <span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span>=<span class="string">&quot;username&quot;</span> <span class="attr">value</span>=<span class="string">&quot;$&#123;jdbc.username&#125;&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">property</span>&gt;</span></span><br><span class="line">       <span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span>=<span class="string">&quot;password&quot;</span> <span class="attr">value</span>=<span class="string">&quot;$&#123;jdbc.password&#125;&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">property</span>&gt;</span></span><br><span class="line">       <span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span>=<span class="string">&quot;url&quot;</span> <span class="attr">value</span>=<span class="string">&quot;$&#123;jdbc.url&#125;&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">property</span>&gt;</span></span><br><span class="line">       <span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span>=<span class="string">&quot;driverClassName&quot;</span> <span class="attr">value</span>=<span class="string">&quot;$&#123;jdbc.driverClassName&#125;&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">property</span>&gt;</span></span><br><span class="line">   <span class="tag">&lt;/<span class="name">bean</span>&gt;</span></span><br><span class="line">   <span class="tag">&lt;<span class="name">bean</span> <span class="attr">id</span>=<span class="string">&quot;jdbcTemplate&quot;</span> <span class="attr">class</span>=<span class="string">&quot;org.springframework.jdbc.core.JdbcTemplate&quot;</span>&gt;</span></span><br><span class="line">       <span class="tag">&lt;<span class="name">constructor-arg</span> <span class="attr">name</span>=<span class="string">&quot;dataSource&quot;</span> <span class="attr">ref</span>=<span class="string">&quot;dataSource&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">constructor-arg</span>&gt;</span></span><br><span class="line">   <span class="tag">&lt;/<span class="name">bean</span>&gt;</span></span><br><span class="line">   <span class="tag">&lt;<span class="name">bean</span> <span class="attr">id</span>=<span class="string">&quot;namedParameterJdbcTemplate&quot;</span> <span class="attr">class</span>=<span class="string">&quot;org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate&quot;</span>&gt;</span></span><br><span class="line">       <span class="tag">&lt;<span class="name">constructor-arg</span> <span class="attr">name</span>=<span class="string">&quot;dataSource&quot;</span> <span class="attr">ref</span>=<span class="string">&quot;dataSource&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">constructor-arg</span>&gt;</span></span><br><span class="line">   <span class="tag">&lt;/<span class="name">bean</span>&gt;</span></span><br><span class="line">   <span class="comment">&lt;!--事务控制--&gt;</span></span><br><span class="line">   <span class="comment">&lt;!--配置事务管理器的bean--&gt;</span></span><br><span class="line">   <span class="tag">&lt;<span class="name">bean</span> <span class="attr">id</span>=<span class="string">&quot;transactionManager&quot;</span> <span class="attr">class</span>=<span class="string">&quot;org.springframework.jdbc.datasource.DataSourceTransactionManager&quot;</span>&gt;</span></span><br><span class="line">       <span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span>=<span class="string">&quot;dataSource&quot;</span> <span class="attr">ref</span>=<span class="string">&quot;dataSource&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">property</span>&gt;</span></span><br><span class="line">   <span class="tag">&lt;/<span class="name">bean</span>&gt;</span></span><br><span class="line">   <span class="comment">&lt;!--</span></span><br><span class="line"><span class="comment">   基于xml配置的事务：依赖tx名称空间和aop名称空间</span></span><br><span class="line"><span class="comment">       1、spring中提供事务管理器（切面），配置这个事务管理器</span></span><br><span class="line"><span class="comment">       2、配置出事务方法</span></span><br><span class="line"><span class="comment">       3、告诉spring哪些方法是事务方法（事务切面按照我们的切入点表达式去切入事务方法）</span></span><br><span class="line"><span class="comment">   --&gt;</span></span><br><span class="line">   <span class="tag">&lt;<span class="name">bean</span> <span class="attr">id</span>=<span class="string">&quot;bookService&quot;</span> <span class="attr">class</span>=<span class="string">&quot;cn.tulingxueyuan.service.BookService&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">bean</span>&gt;</span></span><br><span class="line">   <span class="tag">&lt;<span class="name">aop:config</span>&gt;</span></span><br><span class="line">       <span class="tag">&lt;<span class="name">aop:pointcut</span> <span class="attr">id</span>=<span class="string">&quot;txPoint&quot;</span> <span class="attr">expression</span>=<span class="string">&quot;execution(* cn.tulingxueyuan.service.*.*(..))&quot;</span>/&gt;</span></span><br><span class="line">       <span class="comment">&lt;!--事务建议：advice-ref:指向事务管理器的配置--&gt;</span></span><br><span class="line">       <span class="tag">&lt;<span class="name">aop:advisor</span> <span class="attr">advice-ref</span>=<span class="string">&quot;myAdvice&quot;</span> <span class="attr">pointcut-ref</span>=<span class="string">&quot;txPoint&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">aop:advisor</span>&gt;</span></span><br><span class="line">   <span class="tag">&lt;/<span class="name">aop:config</span>&gt;</span></span><br><span class="line">   <span class="tag">&lt;<span class="name">tx:advice</span> <span class="attr">id</span>=<span class="string">&quot;myAdvice&quot;</span> <span class="attr">transaction-manager</span>=<span class="string">&quot;transactionManager&quot;</span>&gt;</span></span><br><span class="line">       <span class="comment">&lt;!--事务属性--&gt;</span></span><br><span class="line">       <span class="tag">&lt;<span class="name">tx:attributes</span>&gt;</span></span><br><span class="line">           <span class="comment">&lt;!--指明哪些方法是事务方法--&gt;</span></span><br><span class="line">           <span class="tag">&lt;<span class="name">tx:method</span> <span class="attr">name</span>=<span class="string">&quot;*&quot;</span>/&gt;</span></span><br><span class="line">           <span class="tag">&lt;<span class="name">tx:method</span> <span class="attr">name</span>=<span class="string">&quot;checkout&quot;</span> <span class="attr">propagation</span>=<span class="string">&quot;REQUIRED&quot;</span>/&gt;</span></span><br><span class="line">           <span class="tag">&lt;<span class="name">tx:method</span> <span class="attr">name</span>=<span class="string">&quot;get*&quot;</span> <span class="attr">read-only</span>=<span class="string">&quot;true&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">tx:method</span>&gt;</span></span><br><span class="line">       <span class="tag">&lt;/<span class="name">tx:attributes</span>&gt;</span></span><br><span class="line">   <span class="tag">&lt;/<span class="name">tx:advice</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">beans</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>源码解析：</p>
+<p>AutoProxyRegister：注册BeanPostProcess</p>
+<p>ProxyTransactionManagementConfiguration：配置类</p>
+<p>导入Spring内置的Advisor（Advice，pointcut）</p>
+<p>在一个事务中方法中，如果在没有暴露，<strong>多个事务嵌套使用同一个数据库链接</strong>，嵌套事务会被添加到<strong>事务同步管理器</strong>中</p>
+<h3 id="更新待续"><a href="#更新待续" class="headerlink" title="更新待续"></a>更新待续</h3>
+        
+        <!-------------->
+      </div>
+      <div class="post-tags">
+      
+        <a class="tag-none-link" href="/tags/Aop/" rel="tag">Aop</a> <a class="tag-none-link" href="/tags/Ioc/" rel="tag">Ioc</a>
+      
+    </div>
+    </article>
+  
+</section>
+
+          
+     <nav class="pagination">
+    
+      <a href="/page/2/">
+        <span class="prev"><i class="iconfont icon-back"></i>上一页</span>
+      </a>
+    
+    
+      <a href="/page/4/">
+        <span class="next">下一页<i class="iconfont icon-more"></i></span>
+      </a>
+    
+  </nav>
+
+
+          
+
+      </main>
+    </div>
+    <footer>
+      <div class="social-links">
+        
+          
+            <a target="_blank" rel="noopener" href="https://www.zhihu.com/"><i class="iconfont icon-zhihu"></i></a>
+          
+        
+          
+            <a target="_blank" rel="noopener" href="https://weibo.com"><i class="iconfont icon-weibo"></i></a>
+          
+        
+          
+            <a target="_blank" rel="noopener" href="https://github.com/"><i class="iconfont icon-github"></i></a>
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+      </div>
+      
+        <div class="quote">
+          <p>Love all, trust a few, do wrong to none.——William Shakespeare</p>
+        </div>
+      
+      <div class="copyright">
+        <p>
+          由 <a target="_blank" rel="noopener" href="https://hexo.io/">Hexo</a> 强力驱动
+          <span>|</span>
+          主题 - <a target="_blank" rel="noopener" href="https://github.com/wa-ri/hexo-theme-ztopic">ztopic</a
+        </p>
+        <p>
+          <span>
+          
+          &copy;
+          
+            2021
+          
+          </span>
+          <i class="iconfont icon-circle"></i>
+          <span>Shope Huwang</span>
+        </p>
+      </div>
+</footer>
+
+    <div class="back-to-top" id="back-to-top">
+      <i class="iconfont icon-up"></i>
+    </div>
+  </div>
+  <div id="mobile-nav">
+  <nav id="mobile-nav-menu">
+    
+      <a href="/" class="mobile-nav-link"><i class="iconfont icon-home"></i>首页</a>
+    
+      <a href="/archives" class="mobile-nav-link"><i class="iconfont icon-archive"></i>归档</a>
+    
+      <a href="/about" class="mobile-nav-link"><i class="iconfont icon-about"></i>关于</a>
+    
+    <div class="mobile-intro"><i class="iconfont icon-pen"></i>You&#39;ll shine like a diamond</div>
+  </nav>
+</div>
+
+
+  
+<script src="/libs/jQuery/jquery-3.2.1.min.js"></script>
+
+  
+<script src="/libs/slideout/slideout.min.js"></script>
+
+  
+    
+<link rel="stylesheet" href="/libs/fancybox/jquery.fancybox.css">
+
+    
+<script src="/libs/fancybox/jquery.fancybox.pack.js"></script>
+
+  
+  
+
+  
+<script src="/js/ztopic.js"></script>
+
+</body>
+</html>
